@@ -100,6 +100,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['role'] = user.groups.all()[0].name
         # ...
+        if(user.groups.all()[0].name == "admin"):
+            police_station = Admin.objects.get(user=user).police_station
+            token['police_station'] = police_station
 
         return token
 
@@ -579,6 +582,7 @@ class ScheduleViewSet(viewsets.ModelViewSet):
             location = request.data["location"],
             shift = request.data["shift"],
             date = request.data["date"],
+            police_station = request.data["police_station"],
         )
         schedule.save()
         return Response({"status": "schedule created"}, status=status.HTTP_201_CREATED)
@@ -586,7 +590,8 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["GET"])
     def get_scheduled_officers(self, request, *args, **kwargs):
         date = request.GET.get('date')
-        queryset = Schedule.objects.filter(date=date)
+        policeStation = request.GET.get('police_station')
+        queryset = Schedule.objects.filter(date=date, police_station=policeStation)
         serializer = scheduledOfficersSerializer(queryset, many=True)
         return Response(serializer.data)
 

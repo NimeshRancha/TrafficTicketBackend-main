@@ -177,7 +177,7 @@ class scheduledOfficersSerializer(serializers.ModelSerializer):
 class DriverDetailsSerializer(serializers.ModelSerializer):
     nic = serializers.CharField(source='nic.nic')
     full_name = serializers.SerializerMethodField()
-    telephone = serializers.CharField(source='nic.telephone')
+    email = serializers.CharField(source='user.email')
     vehicle_number = serializers.SerializerMethodField()
 
     def get_full_name(self, obj):
@@ -190,7 +190,7 @@ class DriverDetailsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Driver
-        fields = ['nic', 'full_name','vehicle_number', 'telephone']
+        fields = ['nic', 'full_name','vehicle_number', 'email']
 
 
 class OfficerDetailsSerializer(serializers.ModelSerializer):
@@ -221,17 +221,18 @@ class FineDetailsSerializer(serializers.ModelSerializer):
         fields = ['fine_id','driver_nic','vehicle_number','location','date','time','violation_type','due_date','payment']
 
 class AccidentDetailsSerializer(serializers.ModelSerializer):
-    vehicles = serializers.SerializerMethodField()
+    # vehicles = serializers.SerializerMethodField()
+    
 
-    def get_vehicles(self, instance):
-        # Get the related vehicles for the given accident instance
-        vehicle_accidents = VehicleAccident.objects.filter(accident=instance)
-        vehicles = '\n'.join([va.vehicle.vehicle_number for va in vehicle_accidents])
-        return vehicles
+    # def get_vehicles(self, instance):
+    #     # Get the related vehicles for the given accident instance
+    #     vehicle_accidents = VehicleAccident.objects.filter(accident=instance)
+    #     vehicles = '\n'.join([va.vehicle.vehicle_number for va in vehicle_accidents])
+    #     return vehicles
 
     class Meta:
         model = Accident
-        fields = ['location','date','time','description','vehicles']
+        fields = ['location','date','time','description','reporter']
 
 class RecentAccidentsSerializer(serializers.ModelSerializer):
     class Meta:

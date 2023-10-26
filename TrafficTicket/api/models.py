@@ -106,6 +106,7 @@ class Schedule(models.Model):
     location = models.CharField(max_length=50)
     shift = models.CharField(max_length=5)
     date = models.DateField()
+    police_station = models.CharField(max_length=20, null=True)
 
 class VehicleAccident(models.Model):
     accident = models.ForeignKey('Accident', on_delete=models.CASCADE)
@@ -117,6 +118,7 @@ class OTPVerification(models.Model):
     nic = models.CharField(max_length=12)
     otp = models.CharField(max_length=6)
     timestamp = models.DateTimeField(auto_now_add=True)
+
 class OfficerLocation(models.Model):
     police_station = models.CharField(max_length=20)
     location = models.CharField(max_length=50)
