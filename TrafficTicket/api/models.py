@@ -9,7 +9,6 @@ class Admin(models.Model):
 #done
 class Vehicle(models.Model):
     vehicle_number = models.CharField(max_length=7, primary_key=True)
-    # owner_name = models.CharField(max_length=100, default="Unknown")
     chassis_number = models.CharField(max_length=20)
     engine_number = models.CharField(max_length=20)
     vehicle_type = models.CharField(max_length=20)

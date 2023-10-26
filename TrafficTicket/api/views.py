@@ -71,7 +71,8 @@ from api.serializers import (
     OfficerLocationSerializer,
     CameraLocationSerializer,
     PoliceStationLocationsSerializer,
-    FineIdSerializer
+    FineIdSerializer,
+    VehicleDetailsSerializer
     )
 
 from rest_framework import generics
@@ -190,7 +191,7 @@ class UserViewSet(viewsets.ModelViewSet):
         print("officer signup")
         print(request.data)
         user = User.objects.create_user(
-            username=request.data["nic"],
+            username=request.data["officer_id"],
             password=request.data["password"],
         )
         group = Group.objects.get(name="officer")
@@ -376,8 +377,12 @@ class VehicleViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Vehicle.objects.all()
-    serializer_class = VehicleSerializer
     permission_classes = [permissions.AllowAny]
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return VehicleDetailsSerializer
+        return VehicleSerializer
 
 
 class FineViewSet(viewsets.ModelViewSet):
@@ -392,14 +397,6 @@ class FineViewSet(viewsets.ModelViewSet):
         if self.action == "list":
             return FineDetailsSerializer
         return FineSerializer
-class FineViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-
-    queryset = Fine.objects.all()
-    serializer_class = FineSerializer
-    permission_classes = [permissions.AllowAny]
 
 class FineByIdViewSet(viewsets.ModelViewSet):
     """

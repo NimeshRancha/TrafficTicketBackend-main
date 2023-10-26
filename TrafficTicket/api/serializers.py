@@ -247,3 +247,16 @@ class OTPVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTPVerification
         fields = '__all__'
+
+class VehicleDetailsSerializer(serializers.ModelSerializer):
+    owner_name = serializers.SerializerMethodField()
+
+    def get_owner_name(self, instance):
+        # Get the related vehicles for the given accident instance
+        vehicle_owners = VehicleOwner.objects.filter(vehicle_number=instance)
+        owner = '\n'.join([va.nic.nic.first_name for va in vehicle_owners])
+        return owner
+
+    class Meta:
+        model = Vehicle
+        fields = ['vehicle_number','chassis_number','engine_number','vehicle_type','color','license_expiry_date','owner_name']
