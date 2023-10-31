@@ -20,13 +20,13 @@ from api.models import (
     OfficerLocation
 )
 
-def add_permissions(group,model_permissions):
+# def add_permissions(group,model_permissions):
 # Loop through the model_permissions dictionary and add the permissions to the group
-    for model, permission_codenames in model_permissions.items():
-        content_type = ContentType.objects.get_for_model(model)
-        for codename in permission_codenames:
-            permission = Permission.objects.get(content_type=content_type, codename=codename)
-            group.permissions.add(permission)
+    # for model, permission_codenames in model_permissions.items():
+    #     content_type = ContentType.objects.get_for_model(model)
+    #     for codename in permission_codenames:
+    #         permission = Permission.objects.get(content_type=content_type, codename=codename)
+    #         group.permissions.add(permission)
 
 def create_groups(apps, schema_editor):
     # create officer group
@@ -43,7 +43,7 @@ def create_groups(apps, schema_editor):
         VehicleAccident: ['view_vehicleaccident','add_vehicleaccident'],
         VehicleOwner: ['view_vehicleowner'],
     }
-    add_permissions(officer_group,officer_permissions)
+    # add_permissions(officer_group,officer_permissions)
     officer_group.save()
 
     # create driver group
@@ -59,7 +59,7 @@ def create_groups(apps, schema_editor):
         VehicleOwner: ['view_vehicleowner','add_vehicleowner'],
         User: ['view_user','add_user'],
     }
-    add_permissions(driver_group, driver_permissions)
+    # add_permissions(driver_group, driver_permissions)
     driver_group.save()
 
     # create admin group
@@ -81,7 +81,7 @@ def create_groups(apps, schema_editor):
         ViolationType: ['view_violationtype'],
         User: ['view_user','add_user'],
     }
-    add_permissions(admin_group, admin_permissions)
+    # add_permissions(admin_group, admin_permissions)
     admin_group.save()
 
 class Migration(migrations.Migration):
